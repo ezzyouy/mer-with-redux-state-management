@@ -13,7 +13,6 @@ function HomeScreen() {
     useEffect(() => {
         dispatch(listProducts());
     }, [dispatch])
-console.log("eroor", error);
 
     return (
         <div>
