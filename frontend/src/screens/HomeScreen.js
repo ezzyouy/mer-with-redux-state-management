@@ -22,8 +22,8 @@ function HomeScreen() {
                 <MessageBox variant="danger">{error.message  }</MessageBox>
             ) : (
                 <div className="row center">
-
                     {products.map((product) => (
+                       
                         <Product key={product._id} product={product} />
                     ))}
                 </div>
