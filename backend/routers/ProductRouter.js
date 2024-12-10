@@ -12,7 +12,7 @@ productRouter.get('/seed', expressAsyncHandler(async(req,res)=>{
     res.send({createProduct});
 }));
 productRouter.get("/", expressAsyncHandler(async(req, res) => {
-    const products= await Product.find();
+    const products= await Product.find();    
     if(products)
         res.send(products) 
 }));

@@ -11,6 +11,7 @@ function CartScreen() {
     const params = useParams();
     const { id: productId } = params;
     const { search } = useLocation();
+    
     const sp = new URLSearchParams(search);
     const qty = sp.get('qty') || 1;
 
@@ -30,7 +31,7 @@ function CartScreen() {
     };
 
     const checkoutHandler = () => {
-        navigate(`/signin?redirect=shipping`);
+        navigate('/signin?redirect=/shipping');
     };
     return (
         <div className='row top'>
