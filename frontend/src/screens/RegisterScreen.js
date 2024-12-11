@@ -35,7 +35,7 @@ function RegisterScreen() {
         if (userInfo) {
             navigate(redirect)
         }
-    }, [userInfo, redirect])
+    }, [userInfo, redirect,navigate])
 
     return (
         <div>

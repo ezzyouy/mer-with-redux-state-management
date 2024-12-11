@@ -30,7 +30,7 @@ function SigninScreen() {
         if (userInfo) {
             navigate(redirect)
         }
-    }, [userInfo, redirect]) 
+    }, [userInfo, redirect, navigate]) 
     
     return (
         <div>
