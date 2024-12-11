@@ -13,7 +13,6 @@ function HomeScreen() {
     useEffect(() => {
         dispatch(listProducts());
     }, [dispatch])
-
     return (
         <div>
             {loading ? (
