@@ -9,6 +9,7 @@ import { signout } from "./actions/userActions";
 import RegisterScreen from "./screens/RegisterScreen";
 import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 import PaymentMethodScreen from "./screens/PaymentMethodScreen";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
           </div>
           <div>
             <Link to="/cart">Cart
-              {cartItems.length > 0 && (
+              {cartItems.length >  0 && (
                 <span className='badge'>{cartItems.length}</span>
               )}
             </Link>
@@ -62,6 +63,7 @@ function App() {
             <Route path="/register" element={<RegisterScreen />}></Route>
             <Route path="/shipping" element={<ShippingAddressScreen />}></Route>
             <Route path="/payment" element={<PaymentMethodScreen />}></Route>
+            <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
           </Routes>
         </main>
         <footer className="row center">All right reserved</footer>
