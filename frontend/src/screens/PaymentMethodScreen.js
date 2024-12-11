@@ -40,7 +40,7 @@ function PaymentMethodScreen() {
               value="PayPal"
               name="paymentMethod"
               required
-              checked
+              checked={paymentMethod === 'PayPal'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             ></input>
             <label htmlFor="paypal">PayPal</label>
@@ -53,6 +53,7 @@ function PaymentMethodScreen() {
               id="stripe"
               value="Stripe"
               name="paymentMethod"
+              checked={paymentMethod === 'Stripe'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             ></input>
             <label htmlFor="stripe">Stripe</label>
