@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CheckoutSteps from "../component/CheckoutSteps";
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingAddress } from "../actions/cartActions";
@@ -11,9 +11,13 @@ function ShippingAddressScreen() {
   const { shippingAddress } = cart;
   const navigate = useNavigate();
 
+useEffect(() => {
   if (!userInfo) {
     navigate("/signin");
   }
+}, [userInfo, navigate])
+
+  
 
   const [fullName, setFullName] = useState(shippingAddress.fullName || "");
   const [address, setAddress] = useState(shippingAddress.address || "");

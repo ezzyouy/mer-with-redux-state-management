@@ -249,9 +249,9 @@ img.large {
   margin: 1rem;
 }
 
-.for m label {
+.form label {
   margin: 1rem 0;
-  display: block;
+  /* display: block; */
 }
 
 /* Dropdown*/
