@@ -50,6 +50,7 @@ function OrderScreen() {
 
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
+           
       dispatch(payOrder(order,details));
     });
   }

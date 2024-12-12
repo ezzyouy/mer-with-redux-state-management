@@ -49,12 +49,11 @@ orderRouter.put(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
-    console.log(req.body);
-    
+       
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
-      order.paymentMethod = {
+      order.paymentResult = {
         id: req.body.id,
         status: req.body.status,
         update_time: req.body.update_time,
