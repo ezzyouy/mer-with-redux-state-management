@@ -15,6 +15,16 @@ userRouter.get('/seed', expressAsyncHandler(async (req, res) => {
     res.send({ createUser });
 }));
 
+userRouter.get('/:id', expressAsyncHandler(async (req, res) => {
+
+    const user=await User.findById(req.params.id)
+    if(user){
+        res.send(user);
+    }else{
+        res.status(404).send({message:"User not found"})
+    }
+}));
+
 userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
 
     const user = await User.findOne({ email: req.body.email });
