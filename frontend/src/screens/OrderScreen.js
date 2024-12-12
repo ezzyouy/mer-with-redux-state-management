@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, /* useNavigate,*/ useParams } from "react-router-dom";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
 import { detailsOrder } from "../actions/orderActions";
+import Axios from "axios";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 
 function OrderScreen() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
+
+  const [sdkReady, setSdkReady] = useState(false);
 
   const params = useParams();
   const { id: orderId } = params;
@@ -15,11 +19,31 @@ function OrderScreen() {
   const { loading, error, order } = orderDetails;
 
   const dispatch = useDispatch();
-
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
   useEffect(() => {
-    dispatch(detailsOrder(orderId));
-  }, [dispatch, orderId]);
+    if (!order) {
+      dispatch(detailsOrder(orderId));
+    } else {
+      const loadPaypalScript = async () => {
+        const { data: clientId } = await Axios.get("/api/config/paypal");
+        paypalDispatch({
+          type: "resetOptions",
+          value: {
+            clientId: clientId,
+            currency: "USD",
+          },
+        });
+        paypalDispatch({
+          type: "setLoadingStatus",
+          value: "pending",
+        });
+      };
+      loadPaypalScript();
+    }
+  }, [dispatch, orderId, sdkReady, order]);
+  console.log("sdkReady-->", sdkReady);
 
+  const successPaymentHandler = () => {};
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -136,6 +160,37 @@ function OrderScreen() {
                   </div>
                 </div>
               </li>
+              {!order.isPaid && (
+                <li>
+                  {isPending ? (
+                    <LoadingBox></LoadingBox>
+                  ) : (
+                    <>
+                      {console.log("ana db hna")}
+                      <PayPalButtons
+                        createOrder={(data, actions) => {
+                          return actions.order.create({
+                            purchase_units: [
+                              {
+                                amount: {
+                                  currency_code: "USD",
+                                  value: order.totalPrice,
+                                },
+                              },
+                            ],
+                            // application_context: {
+                            //   shipping_preference: "NO_SHIPPING" // default is "GET_FROM_FILE"
+                            // }
+                          });
+                        }}
+                        onApprove={(data, actions) => {
+                          // Capture the funds from the transaction
+                        }}
+                      />
+                    </>
+                  )}
+                </li>
+              )}
             </ul>
           </div>
         </div>
