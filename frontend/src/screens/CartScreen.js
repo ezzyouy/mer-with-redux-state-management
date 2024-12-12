@@ -33,6 +33,8 @@ function CartScreen() {
     const checkoutHandler = () => {
         navigate('/signin?redirect=/shipping');
     };
+    console.log(cartItems);
+    
     return (
         <div className='row top'>
             <div className='col-2'>
