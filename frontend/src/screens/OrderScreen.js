@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, /* useNavigate,*/ useParams } from "react-router-dom";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
-import { detailsOrder } from "../actions/orderActions";
+import { detailsOrder, payOrder } from "../actions/orderActions";
 import Axios from "axios";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { ORDER_PAY_RESET } from "../constants/orderConstants";
 
 function OrderScreen() {
   //const navigate = useNavigate();
-
-  const [sdkReady, setSdkReady] = useState(false);
 
   const params = useParams();
   const { id: orderId } = params;
@@ -18,10 +17,17 @@ function OrderScreen() {
   const orderDetails = useSelector((state) => state.orderDetails);
   const { loading, error, order } = orderDetails;
 
+  const orderPay = useSelector((state) => state.orderPay);
+  const {
+    loading: loadingPay,
+    error: errorPay,
+    success: successPay,
+  } = orderPay;
   const dispatch = useDispatch();
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
   useEffect(() => {
-    if (!order) {
+    if (!order || successPay || (order && order._id !== orderId)) {
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(detailsOrder(orderId));
     } else {
       const loadPaypalScript = async () => {
@@ -40,10 +46,13 @@ function OrderScreen() {
       };
       loadPaypalScript();
     }
-  }, [dispatch, orderId, sdkReady, order]);
-  console.log("sdkReady-->", sdkReady);
+  }, [dispatch, orderId, order, paypalDispatch, successPay]);
 
-  const successPaymentHandler = () => {};
+  function onApprove(data, actions) {
+    return actions.order.capture().then(async function (details) {
+      dispatch(payOrder(order,details));
+    });
+  }
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -166,7 +175,10 @@ function OrderScreen() {
                     <LoadingBox></LoadingBox>
                   ) : (
                     <>
-                      {console.log("ana db hna")}
+                      {errorPay && (
+                        <MessageBox variant="danger">{errorPay}</MessageBox>
+                      )}
+                      {loadingPay && <LoadingBox></LoadingBox>}
                       <PayPalButtons
                         createOrder={(data, actions) => {
                           return actions.order.create({
@@ -183,9 +195,7 @@ function OrderScreen() {
                             // }
                           });
                         }}
-                        onApprove={(data, actions) => {
-                          // Capture the funds from the transaction
-                        }}
+                        onApprove={onApprove}
                       />
                     </>
                   )}
