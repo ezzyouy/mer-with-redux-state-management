@@ -25,17 +25,17 @@ function ProductListScreen() {
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
-      navigate(`/product/${createdProduct._id}/edit`)
+      navigate(`/product/${createdProduct._id}/edit`);
     }
     dispatch(listProducts());
-  }, [dispatch, successCreate, createProduct, navigate]);
+  }, [dispatch, successCreate, navigate, createdProduct]);
 
   const createHandler = () => {
     dispatch(createProduct());
   };
 
   const deleteHandler = () => {};
-  const editHandler = () => {};
+
   return (
     <div>
       <div className="row">
@@ -44,8 +44,8 @@ function ProductListScreen() {
           Create Product
         </button>
       </div>
-      {loadingCreate&&<LoadingBox/>}
-      {errorCreate&& <MessageBox variant="danger">{errorCreate}</MessageBox>}
+      {loadingCreate && <LoadingBox />}
+      {errorCreate && <MessageBox variant="danger">{errorCreate}</MessageBox>}
       {loading ? (
         <LoadingBox />
       ) : error ? (
@@ -54,12 +54,12 @@ function ProductListScreen() {
         <table className="table">
           <thead>
             <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
-                <th>ACTIONS</th>
+              <th>ID</th>
+              <th>NAME</th>
+              <th>PRICE</th>
+              <th>CATEGORY</th>
+              <th>BRAND</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
           <tbody>
@@ -71,12 +71,20 @@ function ProductListScreen() {
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
                 <td>
-                    <button type="button" onClick={editHandler}>
-                        Edit
-                    </button>
-                    <button type="button" onClick={deleteHandler}>
-                        Delete
-                    </button>
+                  <button
+                    type="button"
+                    className="small"
+                    onClick={() => navigate(`/product/${product._id}/edit`)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="small"
+                    onClick={() => deleteHandler(product)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

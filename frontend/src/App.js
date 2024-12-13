@@ -16,6 +16,7 @@ import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import PrivateRoute from "./component/PrivateRoute";
 import AdminRoute from "./component/AdminRoute";
 import ProductListScreen from "./screens/ProductListScreen";
+import ProductEditScreen from "./screens/ProductEditScreen";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -94,7 +95,16 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<HomeScreen />} exact></Route>
-            <Route path="/product/:id" element={<ProductScreen />} exact></Route>
+            <Route
+              path="/product/:id"
+              element={<ProductScreen />}
+              exact
+            ></Route>
+            <Route
+              path="/product/:id/edit"
+              element={<ProductEditScreen />}
+              exact
+            ></Route>
             <Route path="/cart/:id?" element={<CartScreen />}></Route>
             <Route path="/signin" element={<SigninScreen />}></Route>
             <Route path="/register" element={<RegisterScreen />}></Route>
@@ -102,6 +112,7 @@ function App() {
             <Route path="/payment" element={<PaymentMethodScreen />}></Route>
             <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
             <Route path="/order/:id" element={<OrderScreen />}></Route>
+
             <Route
               path="/productlist"
               element={
