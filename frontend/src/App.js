@@ -14,6 +14,8 @@ import OrderScreen from "./screens/OrderScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import PrivateRoute from "./component/PrivateRoute";
+import AdminRoute from "./component/AdminRoute";
+import ProductListScreen from "./screens/ProductListScreen";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -68,7 +70,9 @@ function App() {
             )}
             {userInfo && userInfo.isAdmin && (
               <div className="dropdown">
-                <Link to={"#admin"}>Admin{' '}<i className="fa fa-caret-down"></i></Link>
+                <Link to={"#admin"}>
+                  Admin <i className="fa fa-caret-down"></i>
+                </Link>
                 <ul className="dropdown-content">
                   <li>
                     <Link to={"/dashbord"}>Dashbord</Link>
@@ -83,14 +87,14 @@ function App() {
                     <Link to={"/userlist"}>Users</Link>
                   </li>
                 </ul>
-                </div>
+              </div>
             )}
           </div>
         </header>
         <main>
           <Routes>
             <Route path="/" element={<HomeScreen />} exact></Route>
-            <Route path="/product/:id" element={<ProductScreen />}></Route>
+            <Route path="/product/:id" element={<ProductScreen />} exact></Route>
             <Route path="/cart/:id?" element={<CartScreen />}></Route>
             <Route path="/signin" element={<SigninScreen />}></Route>
             <Route path="/register" element={<RegisterScreen />}></Route>
@@ -98,12 +102,19 @@ function App() {
             <Route path="/payment" element={<PaymentMethodScreen />}></Route>
             <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
             <Route path="/order/:id" element={<OrderScreen />}></Route>
-
+            <Route
+              path="/productlist"
+              element={
+                <AdminRoute>
+                  <ProductListScreen />
+                </AdminRoute>
+              }
+            ></Route>
             <Route
               path="/profile"
               element={
                 <PrivateRoute>
-                  <ProfileScreen/>
+                  <ProfileScreen />
                 </PrivateRoute>
               }
             ></Route>

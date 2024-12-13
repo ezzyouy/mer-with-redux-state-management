@@ -6,7 +6,7 @@ import MessageBox from "../component/MessageBox";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 function ProfileScreen() {
-  const [name, setName] = useState("");
+  const [name, setName] = useState( "");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
