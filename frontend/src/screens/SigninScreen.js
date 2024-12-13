@@ -41,7 +41,7 @@ function SigninScreen() {
                 {loading && <LoadingBox></LoadingBox>}
                 {error && <MessageBox variant="danger">{error}</MessageBox>}
                 <div>
-                    <lable htmlFor="email">Email address</lable>
+                    <label htmlFor="email">Email address</label>
                     <input
                         type='email'
                         id='email'
@@ -50,7 +50,7 @@ function SigninScreen() {
                         onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div>
-                    <lable htmlFor="password">Password address</lable>
+                    <label htmlFor="password">Password address</label>
                     <input
                         type='password'
                         id='password'
@@ -65,7 +65,7 @@ function SigninScreen() {
                     </button>
                 </div>
                 <div>
-                    <lable />
+                    <label />
                     <div>
                         New customer? {' '}
                         <Link to={`/register?redirect=${redirect}`}>Create your account</Link>
