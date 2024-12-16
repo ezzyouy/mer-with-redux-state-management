@@ -5,6 +5,7 @@ import { detailsProduct, updateProduct } from "../actions/productActions";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
 import { PRODUCT_UPDATE_RESET } from "../constants/productConstants";
+import Axios from "axios";
 
 function ProductEditScreen() {
   const navigate = useNavigate();
@@ -67,6 +68,39 @@ function ProductEditScreen() {
       })
     );
   };
+  const [loadingUpload, setLoadingUpload] = useState(false);
+  const [errorUpload, setErrorUpload] = useState("");
+
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append("file", file);
+    setLoadingUpload(true);
+    for(const value of bodyFormData.values()){
+        console.log(value);
+        
+    }
+    try {
+      const { data } = await Axios.post("/api/uploads", bodyFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      console.log("data-->",data);
+      
+      setLoadingUpload(false);
+      setImage(data);
+      console.log("ana hna ");
+    } catch (error) {
+      console.log("3lach ana hna");
+
+      setErrorUpload(error.message);
+      setLoadingUpload(false);
+    }
+  };
   return (
     <div>
       <form className="form" onSubmit={submitHandler}>
@@ -121,6 +155,19 @@ function ProductEditScreen() {
                 onChange={(e) => setImage(e.target.value)}
               ></input>
             </div>
+            <div>
+              <label htmlFor="imageFile">Image File</label>
+              <input
+                type="file"
+                id="imageFile"
+                label="Chose Image"
+                onChange={uploadFileHandler}
+              ></input>
+            </div>
+            {loadingUpload && <LoadingBox />}
+            {errorUpload && (
+              <MessageBox variant="danger">{errorUpload}</MessageBox>
+            )}
             <div>
               <label htmlFor="category">Category</label>
               <input
