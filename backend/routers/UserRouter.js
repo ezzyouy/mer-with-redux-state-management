@@ -4,10 +4,20 @@ import bcrypt from "bcryptjs";
 import User from "../models/userModel.js";
 
 import data from "../data.js";
-import { generateToken, isAuth } from "../utils.js";
+import { generateToken, isAdmin, isAuth } from "../utils.js";
 
 const userRouter = express.Router();
 
+userRouter.get(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+
+    const users= await User.find();
+    res.send(users);
+  })
+);
 userRouter.get(
   "/seed",
   expressAsyncHandler(async (req, res) => {

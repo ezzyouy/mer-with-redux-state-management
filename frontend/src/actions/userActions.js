@@ -3,6 +3,9 @@ import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
+  USER_LIST_FAIL,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
@@ -128,3 +131,26 @@ export const updateUserprofile = (user) => async (dispatch, getState) => {
     });
   }
 };
+
+export const listUser = (ser) => async (dispatch, getState) => {
+    dispatch({ type: USER_LIST_REQUEST});
+    const {
+      userSignin: { userInfo },
+    } = getState();
+    try {
+      const { data } = await Axios.get(`/api/users`, {
+        headers: {
+          Authorization: `bearer ${userInfo.token}`,
+        },
+      });
+      dispatch({ type: USER_LIST_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: USER_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
