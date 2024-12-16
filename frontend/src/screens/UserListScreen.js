@@ -3,9 +3,11 @@ import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, listUser } from "../actions/userActions";
-import { USER_DELETE_RESET } from "../constants/userConstants";
+import { USER_DELETE_RESET, USER_DETAILS_RESET } from "../constants/userConstants";
+import { useNavigate } from "react-router-dom";
 
 function UserListScreen() {
+    const navigate = useNavigate()
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
 
@@ -23,6 +25,7 @@ function UserListScreen() {
       dispatch({ type: USER_DELETE_RESET });
     }
     dispatch(listUser());
+    dispatch({type:USER_DETAILS_RESET})
   }, [dispatch, succesDelete]);
 
   const deleteHandler = (user) => {
@@ -62,7 +65,7 @@ function UserListScreen() {
                 <td>{user.isSeller ? "Yes" : "No"}</td>
                 <td>{user.isAdmin ? "Yes" : "No"}</td>
                 <td>
-                  <button type="button" className="small">
+                  <button type="button" className="small" onClick={()=>navigate(`/user/${user._id}/edit`)}>
                     edit
                   </button>
                   <button
