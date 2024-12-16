@@ -19,6 +19,9 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
 } from "../constants/userConstants";
 
 export const signin = (email, password) => async (dispatch) => {
@@ -173,6 +176,29 @@ export const listUser = () => async (dispatch, getState) => {
     } catch (error) {
       dispatch({
         type: USER_DELETE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+  export const updateUser = (user) => async (dispatch, getState) => {
+    dispatch({ type: USER_UPDATE_REQUEST, payload: user });
+    const {
+      userSignin: { userInfo },
+    } = getState();
+    try {
+      const { data } = await Axios.put(`/api/users/${user._id}/edit`, user, {
+        headers: {
+          Authorization: `bearer ${userInfo.token}`,
+        },
+      });
+      dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: USER_UPDATE_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

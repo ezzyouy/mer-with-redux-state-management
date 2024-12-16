@@ -103,6 +103,24 @@ userRouter.post(
     });
   })
 );
+userRouter.put(
+  "/:id/edit",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.isSeller = req.body.isSeller || user.isSeller;
+      user.isAdmin = req.body.isAdmin || user.isAdmin;
+      const updateUser = await user.save();
+      res.send({ message: "User updated", user: updateUser });
+    } else {
+      res.status(404).send({ message: "User Not Found" });
+    }
+  })
+);
 
 userRouter.delete(
   "/:id",
@@ -110,11 +128,11 @@ userRouter.delete(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     console.log(req.params.id);
-    
+
     const user = await User.findById(req.params.id);
     if (user) {
-      if(user.isAdmin){
-        res.status(400).send({message:"Can not delete admin"});
+      if (user.isAdmin) {
+        res.status(400).send({ message: "Can not delete admin" });
         return;
       }
       await user.remove();
