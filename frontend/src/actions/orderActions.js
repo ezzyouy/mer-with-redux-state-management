@@ -175,7 +175,7 @@ export const deliverOrder = (orderId) => async (dispatch, getState) => {
     
     const { data } = await Axios.put(`/api/orders/${orderId}/deliver`,{}, {
       headers: {
-        Authorization: `bearer ${userInfo.token}`,
+        Authorization: `bearer ${userInfo.token}`, 
       },
     });
 
