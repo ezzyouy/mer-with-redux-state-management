@@ -16,7 +16,9 @@ function OrderListScreen() {
   }, [dispatch]);
 
   const deleteHandler=(order)=>{
+    // if(confirm('are you sur to delete')){
 
+    // }
   }
 
   return (

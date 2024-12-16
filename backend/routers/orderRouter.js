@@ -1,7 +1,7 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
-import { isAuth } from "../utils.js";
+import {  isAuth } from "../utils.js";
 
 const orderRouter = express.Router();
 
@@ -9,7 +9,7 @@ orderRouter.get(
   "/",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({}).populate('user', 'name'); 
+    const orders = await Order.find({}).populate("user", "name");
 
     if (orders) {
       res.send(orders);
@@ -22,7 +22,7 @@ orderRouter.get(
   "/mine",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id }); 
+    const orders = await Order.find({ user: req.user._id });
 
     if (orders) {
       res.send(orders);
@@ -92,5 +92,6 @@ orderRouter.put(
     }
   })
 );
+
 
 export default orderRouter;

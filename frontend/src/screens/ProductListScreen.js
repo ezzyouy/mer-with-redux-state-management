@@ -1,9 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createProduct, listProducts } from "../actions/productActions";
+import {
+  createProduct,
+  deleteProduct,
+  listProducts,
+} from "../actions/productActions";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
-import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
+import {
+  PRODUCT_CREATE_RESET,
+  PRODUCT_DELETE_RESET,
+} from "../constants/productConstants";
 import { useNavigate } from "react-router-dom";
 
 function ProductListScreen() {
@@ -20,6 +27,13 @@ function ProductListScreen() {
     product: createdProduct,
   } = productCreate;
 
+  const productDelete = useSelector((state) => state.productDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = productDelete;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,14 +41,20 @@ function ProductListScreen() {
       dispatch({ type: PRODUCT_CREATE_RESET });
       navigate(`/product/${createdProduct._id}/edit`);
     }
+    if (successDelete) {
+      dispatch({ type: PRODUCT_DELETE_RESET });
+    }
     dispatch(listProducts());
-  }, [dispatch, successCreate, navigate, createdProduct]);
+  }, [dispatch, successCreate, navigate, createdProduct, successDelete]);
 
   const createHandler = () => {
     dispatch(createProduct());
   };
 
-  const deleteHandler = () => {};
+  const deleteHandler = (product) => {
+    if (window.confirm("Are you sure to delete?"))
+      dispatch(deleteProduct(product._id));
+  };
 
   return (
     <div>
@@ -44,6 +64,9 @@ function ProductListScreen() {
           Create Product
         </button>
       </div>
+      {loadingDelete && <LoadingBox />}
+      {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
+
       {loadingCreate && <LoadingBox />}
       {errorCreate && <MessageBox variant="danger">{errorCreate}</MessageBox>}
       {loading ? (
