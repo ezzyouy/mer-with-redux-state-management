@@ -6,6 +6,9 @@ import {
   ORDER_DETAIL_FAIL,
   ORDER_DETAIL_REQUEST,
   ORDER_DETAIL_SUCCESS,
+  ORDER_LIST_FAIL,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
   ORDER_MINE_LIST_FAIL,
   ORDER_MINE_LIST_REQUEST,
   ORDER_MINE_LIST_SUCCESS,
@@ -94,9 +97,7 @@ export const listOrderMine = () => async (dispatch, getState) => {
   const {
     userSignin: { userInfo },
   } = getState();
-  try {
-      console.log("hna fina ana db");
-      
+  try {      
     const { data } = await Axios.get(`/api/orders/mine`, {
       headers: {
         Authorization: `bearer ${userInfo.token}`,
@@ -106,6 +107,30 @@ export const listOrderMine = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_MINE_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response,
+    });
+  }
+};
+
+export const listOrders = () => async (dispatch, getState) => {
+  dispatch({ type: ORDER_LIST_REQUEST});
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+      
+    const { data } = await Axios.get(`/api/orders`, {
+      headers: {
+        Authorization: `bearer ${userInfo.token}`,
+      },
+    });
+    dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: ORDER_LIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
