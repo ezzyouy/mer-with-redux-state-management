@@ -3,6 +3,9 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
+  ORDER_DELETE_FAIL,
+  ORDER_DELETE_REQUEST,
+  ORDER_DELETE_SUCCESS,
   ORDER_DETAIL_FAIL,
   ORDER_DETAIL_REQUEST,
   ORDER_DETAIL_SUCCESS,
@@ -73,7 +76,6 @@ export const payOrder = (order, details) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    
     const { data } = await Axios.put(`/api/orders/${order._id}/pay`, details, {
       headers: {
         Authorization: `bearer ${userInfo.token}`,
@@ -91,13 +93,12 @@ export const payOrder = (order, details) => async (dispatch, getState) => {
   }
 };
 
-
 export const listOrderMine = () => async (dispatch, getState) => {
-  dispatch({ type: ORDER_MINE_LIST_REQUEST});
+  dispatch({ type: ORDER_MINE_LIST_REQUEST });
   const {
     userSignin: { userInfo },
   } = getState();
-  try {      
+  try {
     const { data } = await Axios.get(`/api/orders/mine`, {
       headers: {
         Authorization: `bearer ${userInfo.token}`,
@@ -116,12 +117,11 @@ export const listOrderMine = () => async (dispatch, getState) => {
 };
 
 export const listOrders = () => async (dispatch, getState) => {
-  dispatch({ type: ORDER_LIST_REQUEST});
+  dispatch({ type: ORDER_LIST_REQUEST });
   const {
     userSignin: { userInfo },
   } = getState();
   try {
-      
     const { data } = await Axios.get(`/api/orders`, {
       headers: {
         Authorization: `bearer ${userInfo.token}`,
@@ -131,6 +131,29 @@ export const listOrders = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.response,
+    });
+  }
+};
+
+export const deleteOrder = (orderId) => async (dispatch, getState) => {
+  dispatch({ type: ORDER_DELETE_REQUEST });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = await Axios.delete(`/api/orders/${orderId}`, {
+      headers: {
+        Authorization: `bearer ${userInfo.token}`,
+      },
+    });
+    dispatch({ type: ORDER_DELETE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: ORDER_DELETE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
