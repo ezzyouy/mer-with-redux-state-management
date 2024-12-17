@@ -15,6 +15,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import PrivateRoute from "./component/PrivateRoute";
 import AdminRoute from "./component/AdminRoute";
+import SellerRoute from "./component/SellerRoute";
 import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
 import OrderListScreen from "./screens/OrderListScreen";
@@ -71,6 +72,21 @@ function App() {
               </div>
             ) : (
               <Link to="/signin">Sign In</Link>
+            )}
+            {userInfo && userInfo.isSeller && (
+              <div className="dropdown">
+                <Link to={"#admin"}>
+                  Seller <i className="fa fa-caret-down"></i>
+                </Link>
+                <ul className="dropdown-content">
+                  <li>
+                    <Link to={"/productlist/seller"}>Products</Link>
+                  </li>
+                  <li>
+                    <Link to={"/orderlist/seller"}>Orders</Link>
+                  </li>
+                </ul>
+              </div>
             )}
             {userInfo && userInfo.isAdmin && (
               <div className="dropdown">
@@ -130,6 +146,7 @@ function App() {
                   <ProductListScreen />
                 </AdminRoute>
               }
+              exact
             ></Route>
             <Route
               path="/orderlist"
@@ -138,6 +155,7 @@ function App() {
                   <OrderListScreen />
                 </AdminRoute>
               }
+              exact
             ></Route>
             <Route
               path="/userlist"
@@ -159,6 +177,22 @@ function App() {
             <Route
               path="/orderhistory"
               element={<OrderHistoryScreen />}
+            ></Route>
+            <Route
+              path="/productlist/seller"
+              element={
+                <SellerRoute>
+                  <ProductListScreen />
+                </SellerRoute>
+              }
+            ></Route>
+            <Route
+              path="/orderlist/seller"
+              element={
+                <SellerRoute>
+                  <OrderListScreen />
+                </SellerRoute>
+              }
             ></Route>
           </Routes>
         </main>
