@@ -11,10 +11,17 @@ import {
   PRODUCT_CREATE_RESET,
   PRODUCT_DELETE_RESET,
 } from "../constants/productConstants";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ProductListScreen() {
+  const { pathname } = useLocation();
+
+  const sellerMode = pathname.indexOf("/seller") >= 0;
+
   const navigate = useNavigate();
+
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
 
   const productlist = useSelector((state) => state.productList);
   const { loading, error, products } = productlist;
@@ -44,8 +51,16 @@ function ProductListScreen() {
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
     }
-    dispatch(listProducts());
-  }, [dispatch, successCreate, navigate, createdProduct, successDelete]);
+    dispatch(listProducts({ seller: sellerMode ? userInfo._id : "" }));
+  }, [
+    dispatch,
+    userInfo,
+    sellerMode,
+    successCreate,
+    navigate,
+    createdProduct,
+    successDelete,
+  ]);
 
   const createHandler = () => {
     dispatch(createProduct());

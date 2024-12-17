@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { deleteOrder, listOrders } from "../actions/orderActions";
 import LoadingBox from "../component/LoadingBox";
 import MessageBox from "../component/MessageBox";
@@ -8,6 +8,13 @@ import { ORDER_DELETE_RESET } from "../constants/orderConstants";
 
 function OrderListScreen() {
   const navigate = useNavigate();
+
+  const { pathname } = useLocation();
+
+  const sellerMode = pathname.indexOf("/seller") >= 0;
+
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
 
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
@@ -21,8 +28,8 @@ function OrderListScreen() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch({ type: ORDER_DELETE_RESET });
-    dispatch(listOrders());
-  }, [dispatch, successDelete]);
+    dispatch(listOrders({ seller: sellerMode ? userInfo._id : "" }));
+  }, [dispatch, successDelete, userInfo, sellerMode]);
 
   const deleteHandler = (order) => {
     if (window.confirm("are you sur to delete")) {
@@ -33,7 +40,7 @@ function OrderListScreen() {
   return (
     <div>
       <h1>Order History</h1>
-      
+
       {loadingDelete && <LoadingBox />}
       {error && <MessageBox variant="danger">{errorDelete}</MessageBox>}
       {loading ? (

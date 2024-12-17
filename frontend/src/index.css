@@ -270,10 +270,10 @@ img.large {
 } 
 
 .dropdown-content {
-  position: fixed;
+  position: absolute;
   display: none;
   right: 0;
-  max-width: 20rem;
+  min-width: 12rem;
   padding: 1rem;
   z-index: 1;
   background-color: #203040;
