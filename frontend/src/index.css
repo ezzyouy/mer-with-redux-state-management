@@ -21,9 +21,9 @@ body {
 .grid-container {
   display: grid;
   grid-template-areas:
-    'header'
-    'main'
-    'footer';
+    "header"
+    "main"
+    "footer";
   grid-template-columns: 1fr;
   grid-template-rows: 5rem 1fr 5rem;
   height: 100%;
@@ -78,15 +78,14 @@ input,
 select,
 textarea,
 button {
-  margin-top:1 rem;
-  padding:1rem;
+  margin-top: 1 rem;
+  padding: 1rem;
   border-radius: 0.5rem;
   border: 0.1rem #a4a4a4 solid;
   font-size: 1.6rem;
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
 }
 
 button {
@@ -109,7 +108,7 @@ button.block {
   width: 100%;
 }
 
-button.small{
+button.small {
   font-size: 1.2rem;
 }
 /* Header */
@@ -126,7 +125,7 @@ a.brand {
 
 .badge {
   background-color: #f02020;
-  color: #fffffF;
+  color: #ffffff;
   border-radius: 50%;
   padding: 0.2rem 0.7rem;
   font-size: 1.4rem;
@@ -148,6 +147,10 @@ a.brand {
   align-items: flex-start;
 }
 
+.row.start {
+  justify-content: flex-start;
+}
+
 .col-1 {
   flex: 1 1 25rem;
 }
@@ -156,8 +159,16 @@ a.brand {
   flex: 2 1 50rem;
 }
 
+.col-3 {
+  flex: 32 1 75rem;
+}
+
 .min-30 {
   min-width: 30rem;
+}
+
+.p-1 {
+  padding: 1rem;
 }
 
 /* Image */
@@ -191,7 +202,7 @@ img.large {
   padding: 1rem;
 }
 
-.card-body>* {
+.card-body > * {
   margin-bottom: 0.5rem;
 }
 
@@ -210,9 +221,8 @@ img.large {
 }
 
 /* Alert */
-.loading{
+.loading {
   display: block !important;
-
 }
 
 .success {
@@ -251,7 +261,7 @@ img.large {
   margin: 0 auto;
 }
 
-.form>div {
+.form > div {
   display: flex;
   flex-direction: column;
   margin: 1rem;
@@ -267,7 +277,7 @@ img.large {
 .dropdown {
   display: inline-block;
   position: relative;
-} 
+}
 
 .dropdown-content {
   position: absolute;
@@ -282,41 +292,41 @@ img.large {
   border-radius: 0.5rem;
 }
 
-.dropdown:hover .dropdown-content{
-display: block;
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
 /* Checkout Steps */
 
-.checkout-steps > div{
-  border-top: 0.3rem #c0c0c0 solid ;
+.checkout-steps > div {
+  border-top: 0.3rem #c0c0c0 solid;
   color: #c0c0c0;
-  flex: 1 ;
+  flex: 1;
   padding: 1rem;
   font-weight: bold;
 }
-.checkout-steps > div.active{
+.checkout-steps > div.active {
   border-top-color: #f08000;
   color: #f08000;
 }
 
 /* Table */
 
-.table{
+.table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.table tbody tr:nth-of-type(odd){
+.table tbody tr:nth-of-type(odd) {
   background-color: #f4f4f4;
 }
 .table td,
-.table th{
+.table th {
   text-align: left;
   border: 0.1rem solid #e4e4e4;
   padding: 0.5rem;
 }
 
-.table button{
-  margin:0 0.2rem;
+.table button {
+  margin: 0 0.2rem;
 }
