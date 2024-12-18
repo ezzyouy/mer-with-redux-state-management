@@ -6,6 +6,7 @@ import {
   productDeleteReducer,
   productDetailsReducer,
   productListReducer,
+  productReviewCreateReducer,
   productUpdateReducer,
 } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
@@ -19,7 +20,15 @@ import {
   userUpdateProfileReducer,
   userUpdateReducer,
 } from "./reducers/userReducers";
-import { orderCreateReducer, orderDeleteReducer, orderDeliverReducer, orderDetailsReducer, orderListReducer, orderMineListReducer, orderPayReducer } from "./reducers/orderReducers";
+import {
+  orderCreateReducer,
+  orderDeleteReducer,
+  orderDeliverReducer,
+  orderDetailsReducer,
+  orderListReducer,
+  orderMineListReducer,
+  orderPayReducer,
+} from "./reducers/orderReducers";
 
 const initialState = {
   userSignin: {
@@ -44,23 +53,24 @@ const reducer = combineReducers({
   cart: cartReducer,
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,
-  orderCreate:orderCreateReducer,
-  orderDetails:orderDetailsReducer,
-  orderPay:orderPayReducer,
-  userDetails:userDetailsReducer,
-  orderMineList:orderMineListReducer,
-  userUpdateProfile:userUpdateProfileReducer,
-  productCreate:productCreateReducer,
-  productUpdate:productUpdateReducer,
-  orderList:orderListReducer,
-  productDelete:productDeleteReducer,
-  orderDelete:orderDeleteReducer,
-  orderDeliver:orderDeliverReducer,
-  userList:userListReducer,
-  userDelete:userDeleteReducer,
-  userUpdate:userUpdateReducer,
-  userTopSellersList:userTopSellerListReducer,
-  productCategoryList:productCategoryListReducer
+  orderCreate: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer,
+  userDetails: userDetailsReducer,
+  orderMineList: orderMineListReducer,
+  userUpdateProfile: userUpdateProfileReducer,
+  productCreate: productCreateReducer,
+  productUpdate: productUpdateReducer,
+  orderList: orderListReducer,
+  productDelete: productDeleteReducer,
+  orderDelete: orderDeleteReducer,
+  orderDeliver: orderDeliverReducer,
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
+  userUpdate: userUpdateReducer,
+  userTopSellersList: userTopSellerListReducer,
+  productCategoryList: productCategoryListReducer,
+  productReviewCreate: productReviewCreateReducer,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
