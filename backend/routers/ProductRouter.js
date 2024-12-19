@@ -151,7 +151,7 @@ productRouter.post(
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
-      if (product.reviews.find((x) => x.name === req.user.name)) {
+      if (product.reviews.find((x) => x.name === req. user.name)) {
         res.status(400).send({ message: "You already submitted a review" });
       }
       const review = {
