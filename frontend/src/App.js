@@ -27,6 +27,7 @@ import SearchScreen from "./screens/SearchScreen";
 import { listProductCategories } from "./actions/productActions";
 import LoadingBox from "./component/LoadingBox";
 import MessageBox from "./component/MessageBox";
+import MapScreen from "./screens/MapScreen";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -247,6 +248,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <ProfileScreen />
+                </PrivateRoute>
+              }
+            ></Route>
+            <Route
+              path="/map"
+              element={
+                <PrivateRoute>
+                  <MapScreen />
                 </PrivateRoute>
               }
             ></Route>
