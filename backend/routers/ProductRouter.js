@@ -26,9 +26,14 @@ productRouter.get(
     }
   })
 );
+
 productRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
+    
+    const pageSize = 3;
+    const page = Number(req.query.pageNumber) || 1;
+    
     const seller = req.query.seller || "";
     const order = req.query.order || "";
     const name = req.query.name || "";
@@ -56,6 +61,14 @@ productRouter.get(
         ? { rating: -1 }
         : { _id: -1 };
 
+    const count = await Product.countDocuments({
+      ...sellerFilter,
+      ...nameFilter,
+      ...categoryFilter,
+      ...priceFilter,
+      ...ratingFilter,
+    });
+    
     const products = await Product.find({
       ...sellerFilter,
       ...nameFilter,
@@ -64,8 +77,11 @@ productRouter.get(
       ...ratingFilter,
     })
       .populate("seller", "seller.name seller.logo")
-      .sort(sortOrder);
-    if (products) res.send(products);
+      .sort(sortOrder)
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+    
+      res.send({ products, page, pages: Math.ceil(count / pageSize) });
   })
 );
 productRouter.get(
