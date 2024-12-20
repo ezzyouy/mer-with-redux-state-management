@@ -85,7 +85,7 @@ function ShippingAddressScreen() {
           <h1>Shipping Address</h1>
         </div>
         <div>
-          <lable htmlFor="fullName">Full Name</lable>
+          <label htmlFor="fullName">Full Name</label>
           <input
             type="text"
             id="fullName"
@@ -96,7 +96,7 @@ function ShippingAddressScreen() {
           ></input>
         </div>
         <div>
-          <lable htmlFor="address">Address</lable>
+          <label htmlFor="address">Address</label>
           <input
             type="text"
             id="address"
@@ -107,7 +107,7 @@ function ShippingAddressScreen() {
           ></input>
         </div>
         <div>
-          <lable htmlFor="city">City</lable>
+          <label htmlFor="city">City</label>
           <input
             type="text"
             id="city"
@@ -118,7 +118,7 @@ function ShippingAddressScreen() {
           ></input>
         </div>
         <div>
-          <lable htmlFor="postalCode">Full Name</lable>
+          <label htmlFor="postalCode">Full Name</label>
           <input
             type="text"
             id="postalCode"
@@ -129,7 +129,7 @@ function ShippingAddressScreen() {
           ></input>
         </div>
         <div>
-          <lable htmlFor="country">Country</lable>
+          <label htmlFor="country">Country</label>
           <input
             type="text"
             id="country"
@@ -146,7 +146,7 @@ function ShippingAddressScreen() {
           </button>
         </div>
         <div>
-          <lable />
+          <label />
           <button className="primary" type="submit">
             Continue
           </button>
