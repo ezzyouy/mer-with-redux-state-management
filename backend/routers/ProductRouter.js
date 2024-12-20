@@ -3,6 +3,7 @@ import expressAsyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
 import data from "../data.js";
 import { isAdmin, isAuth, isSellerOrAdmin } from "../utils.js";
+import User from "../models/userModel.js";
 
 const productRouter = express.Router();
 
@@ -10,8 +11,19 @@ productRouter.get(
   "/seed",
   expressAsyncHandler(async (req, res) => {
     await Product.deleteMany({});
-    const createProduct = await Product.insertMany(data.products);
-    res.send({ createProduct });
+    const seller = await User.findOne({ isSeller: true });
+    if (seller) {
+      const products = data.products.map((product) => ({
+        ...product,
+        seller: seller._id,
+      }));
+      const createProduct = await Product.insertMany(data.products);
+      res.send({ createProduct });
+    } else {
+      res
+        .status(500)
+        .send({ message: "No seller found. first run /api/users/seed" });
+    }
   })
 );
 productRouter.get(
@@ -151,7 +163,7 @@ productRouter.post(
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
-      if (product.reviews.find((x) => x.name === req. user.name)) {
+      if (product.reviews.find((x) => x.name === req.user.name)) {
         res.status(400).send({ message: "You already submitted a review" });
       }
       const review = {
