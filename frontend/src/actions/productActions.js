@@ -25,6 +25,7 @@ import {
 
 export const listProducts =
   ({
+    pageNumber = "",
     seller = "",
     name = "",
     category = "",
@@ -39,7 +40,7 @@ export const listProducts =
     });
     try {
       const { data } = await Axios.get(
-        `/api/products?seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}}&order=${order}`
+        `/api/products?pageNumber=${pageNumber}&seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`
       );
       dispatch({
         type: PRODUCT_LIST_SUCCESS,
@@ -181,34 +182,35 @@ export const listProductCategories = () => async (dispatch) => {
   }
 };
 
-export const createReview = (productId,review ) => async (dispatch, getState) => {
-  dispatch({
-    type: PRODUCT_REVIEW_CREATE_REQUEST,
-  });
-  const {
-    userSignin: { userInfo },
-  } = getState();
-  try {
-    const { data } = await Axios.post(
-      `/api/products/${productId}/reviews`,
-      review,
-      {
-        headers: {
-          Authorization: `bearer ${userInfo.token}`,
-        },
-      }
-    );
+export const createReview =
+  (productId, review) => async (dispatch, getState) => {
     dispatch({
-      type: PRODUCT_REVIEW_CREATE_SUCCESS,
-      payload: data.review,
+      type: PRODUCT_REVIEW_CREATE_REQUEST,
     });
-  } catch (error) {
-    dispatch({
-      type: PRODUCT_REVIEW_CREATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+    const {
+      userSignin: { userInfo },
+    } = getState();
+    try {
+      const { data } = await Axios.post(
+        `/api/products/${productId}/reviews`,
+        review,
+        {
+          headers: {
+            Authorization: `bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({
+        type: PRODUCT_REVIEW_CREATE_SUCCESS,
+        payload: data.review,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_REVIEW_CREATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

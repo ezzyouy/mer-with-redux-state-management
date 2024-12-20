@@ -205,7 +205,7 @@ function App() {
               exact
             ></Route>
             <Route
-              path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order"
+              path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber"
               element={<SearchScreen />}
               exact
             ></Route>
@@ -219,6 +219,15 @@ function App() {
             ></Route>
             <Route
               path="/productlist"
+              element={
+                <AdminRoute>
+                  <ProductListScreen />
+                </AdminRoute>
+              }
+              exact
+            ></Route>
+            <Route
+              path="/productlist/pageNumber/:pageNumber"
               element={
                 <AdminRoute>
                   <ProductListScreen />
