@@ -1,7 +1,7 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
-import { isAdmin, isAuth, isSellerOrAdmin } from "../utils.js";
+import { isAdmin, isAuth, isSellerOrAdmin, mailtrap } from "../utils.js";
 
 const orderRouter = express.Router();
 
@@ -81,7 +81,10 @@ orderRouter.put(
   "/:id/pay",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate(
+      "user",
+      "email name"
+    );
 
     if (order) {
       order.isPaid = true;
@@ -93,6 +96,26 @@ orderRouter.put(
         email_address: req.body.email_address,
       };
       const updateOrder = await order.save();
+
+      const sender = {
+        email: "b0e74bdb47-97e865@inbox.mailtrap.io",
+        name: "Amazona",
+      };
+      const recipients = [
+        {
+          email: "brahim.ezzyouy@gmail.com",
+          //email : `${order.user.email}`
+        },
+      ];
+      mailtrap.testing
+        .send({
+          from: sender,
+          to: recipients,
+          subject: "You are awesome!",
+          html: "<h2>Congrats for sending test email with Mailtrap!</h2>",
+          category: "Integration Test",
+        })
+        .then(console.log, console.error);
       res.send({ message: "Order Paid", order: updateOrder });
     } else {
       res.status(404).send({ message: "Order Not Found" });
