@@ -79,11 +79,14 @@ function ProductEditScreen() {
     bodyFormData.append("file", file);
     setLoadingUpload(true);
     for(const value of bodyFormData.values()){
-        console.log(value);
+        console.log(
+            "body format data"
+        );
         
+        console.log(value);
     }
     try {
-      const { data } = await Axios.post("/api/uploads", bodyFormData, {
+      const { data } = await Axios.post("/api/uploads/s3", bodyFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${userInfo.token}`,
