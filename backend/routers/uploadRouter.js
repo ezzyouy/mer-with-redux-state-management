@@ -41,6 +41,7 @@ const uploadS3 = multer({
   storage: multerS3({
     s3,
     bucket: "mern-2024-bucket",
+    acl :"public-read",
     contentType: multerS3.AUTO_CONTENT_TYPE,
     key(req, file, cb) {
       cb(null, `uploads/${Date.now().toString()}_${file.originalname}`);
@@ -51,6 +52,7 @@ const uploadS3 = multer({
 console.log("UploadS3 ", uploadS3.single("file"));
 
 uploadRouter.post("/s3", uploadS3.single("file"), (req, res) => {
-  res.send(req.file.path);
+  
+  res.send(req.file.location);
 });
 export default uploadRouter;
