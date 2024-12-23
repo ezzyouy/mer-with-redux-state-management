@@ -1,6 +1,6 @@
 import express from "express";
 import http from "http";
-import SocketIO from "socket.io";
+import {Server} from "socket.io";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import path from "path";
@@ -47,7 +47,7 @@ app.use((err, req, res, next) => {
 });
 const port = process.env.PORT || 5002;
 const httpServer = http.Server(app);
-const io = SocketIO(httpServer);
+const io = new Server(httpServer);
 const users = [];
 
 io.on("connection", (socket) => {
@@ -93,6 +93,30 @@ io.on("connection", (socket) => {
       io.to(admin.socketId).emit("selectUser", existUser);
     }
   });
+  socket.on("onMessage", (message) => {
+    if (message.isAdmin) {
+      const user = users.find((x) => x._id === message._id && x.online);
+      if (user) {
+        io.to(user.socketId).emit("message", message);
+        user.messages.push(message);
+      }
+    } else {
+      const admin = users.find((x) => x.isAdmin && x.online);
+      if (admin) {
+        io.to(admin.socketId).emit("message", message);
+        const user = users.find((x) => x._id === message.id && x.online);
+        user.messages.push(message);
+      } else {
+        io.to(socket.id).emit("message", {
+          name: "Admin",
+          body: "Sorry. I am not online right now",
+        });
+      }
+    }
+  });
+});
+httpServer.listen(port, () => {
+  console.log(`Server at http://localhost:${port}`);
 });
 /* app.listen(port, () => {
   console.log(`Server at http://localhost:${port}`);
