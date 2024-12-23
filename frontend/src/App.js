@@ -29,6 +29,7 @@ import LoadingBox from "./component/LoadingBox";
 import MessageBox from "./component/MessageBox";
 import MapScreen from "./screens/MapScreen";
 import DashboardScreen from "./screens/DashboardScreen";
+import SupportScreen from "./screens/SupportScreen";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -133,6 +134,9 @@ function App() {
                   </li>
                   <li>
                     <Link to={"/userlist"}>Users</Link>
+                  </li>
+                  <li>
+                    <Link to={"/support"}>Support</Link>
                   </li>
                 </ul>
               </div>
@@ -253,11 +257,19 @@ function App() {
                 </AdminRoute>
               }
             ></Route>
-             <Route
+            <Route
               path="/dashboard"
               element={
                 <AdminRoute>
                   <DashboardScreen />
+                </AdminRoute>
+              }
+            ></Route>
+            <Route
+              path="/support"
+              element={
+                <AdminRoute>
+                  <SupportScreen />
                 </AdminRoute>
               }
             ></Route>
