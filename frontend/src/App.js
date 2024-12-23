@@ -28,6 +28,7 @@ import { listProductCategories } from "./actions/productActions";
 import LoadingBox from "./component/LoadingBox";
 import MessageBox from "./component/MessageBox";
 import MapScreen from "./screens/MapScreen";
+import DashboardScreen from "./screens/DashboardScreen";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -62,7 +63,7 @@ function App() {
               <i className="fa fa-bars"></i>
             </button>
             <Link className="brand" to="/">
-              amazona
+              ShopU
             </Link>
           </div>
           <div>
@@ -122,7 +123,7 @@ function App() {
                 </Link>
                 <ul className="dropdown-content">
                   <li>
-                    <Link to={"/dashbord"}>Dashbord</Link>
+                    <Link to={"/dashboard"}>Dashbord</Link>
                   </li>
                   <li>
                     <Link to={"/productlist"}>Products</Link>
@@ -249,6 +250,14 @@ function App() {
               element={
                 <AdminRoute>
                   <UserListScreen />
+                </AdminRoute>
+              }
+            ></Route>
+             <Route
+              path="/dashboard"
+              element={
+                <AdminRoute>
+                  <DashboardScreen />
                 </AdminRoute>
               }
             ></Route>
