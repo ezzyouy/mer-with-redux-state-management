@@ -30,6 +30,7 @@ import MessageBox from "./component/MessageBox";
 import MapScreen from "./screens/MapScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import SupportScreen from "./screens/SupportScreen";
+import ChatBox from './component/ChatBox'
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -312,7 +313,10 @@ function App() {
             ></Route>
           </Routes>
         </main>
-        <footer className="row center">All right reserved</footer>
+        <footer className="row center">
+          {userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo} />}
+          <div>All right reserved</div>
+        </footer>
       </div>
     </BrowserRouter>
   );
