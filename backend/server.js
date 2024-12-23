@@ -1,4 +1,6 @@
 import express from "express";
+import http from 'http'
+import SocketIO from 'socket.io'
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import path from "path";
@@ -44,6 +46,8 @@ app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
 const port = process.env.PORT || 5002;
-app.listen(port, () => {
+const httpServer=http.Server(app);
+const io= SocketIO(httpServer)
+/* app.listen(port, () => {
   console.log(`Server at http://localhost:${port}`);
-});
+}); */
