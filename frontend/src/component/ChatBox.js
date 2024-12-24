@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import socketIOClient from 'socket.io-client'
+import socketIOClient from "socket.io-client";
 
 const ENDPOINT =
   window.location.host.indexOf("localhost") >= 0
     ? "http://127.0.0.1:5002"
     : window.location.host;
+
 function ChatBox(props) {
   const { userInfo } = props;
 
@@ -18,7 +19,6 @@ function ChatBox(props) {
   ]);
 
   useEffect(() => {
-    
     if (uiMessagesRef.current) {
       uiMessagesRef.current.scrollBy({
         top: uiMessagesRef.current.clientHeight,
@@ -28,7 +28,7 @@ function ChatBox(props) {
     }
     if (socket) {
       console.log(socket);
-      
+
       socket.emit("onLogin", {
         _id: userInfo._id,
         name: userInfo.name,
@@ -37,12 +37,13 @@ function ChatBox(props) {
       socket.on("message", (data) => {
         setMessages([...messages, { body: data.body, name: data.name }]);
       });
+      console.log("messages --> ", messages);
     }
   }, [messages, isOpen, socket, userInfo]);
 
   const supportHandler = () => {
     setIsOpen(true);
-    const sk = socketIOClient(ENDPOINT);
+    const sk = socketIOClient(ENDPOINT, { transports: ["websocket"] });
     setSocket(sk);
   };
 

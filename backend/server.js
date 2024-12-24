@@ -1,5 +1,6 @@
 import express from "express";
 import http from "http";
+import cors from "cors";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -20,6 +21,20 @@ mongoose
   .catch((error) => {
     console.log(error.message);
   });
+const corsOptions = {
+  origin: ["http://localhost:3000"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -47,7 +62,14 @@ app.use((err, req, res, next) => {
 });
 const port = process.env.PORT || 5002;
 const httpServer = http.Server(app);
-const io = new Server(httpServer, { cros: { origin: "*" } });
+const io = new Server(httpServer, {
+  cros: {
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Access-Control-Allow-Origin"],
+  },
+   transports: ["websocket"] 
+});
 const users = [];
 
 io.on("connection", (socket) => {

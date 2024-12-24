@@ -33,7 +33,7 @@ function SupportScreen() {
       });
     }
     if (!socket) {
-      const sk = socketIOClient(ENDPOINT);
+      const sk = socketIOClient(ENDPOINT, { transports: ["websocket"] });
       setSocket(sk);
 
       sk.emit("onLogin", {
