@@ -45,10 +45,10 @@ function SupportScreen() {
         if (allSelectedUser._id === data._id) {
           allMessages = [...allMessages, data];
         } else {
-          const existUser = allUsers.find((user) => user._id === existUser._id);
+          const existUser = allUsers.find((user) => user._id === data._id);
           if (existUser) {
-            allUsers = allUsers.find((user) =>
-              user._id === existUser._id ? { ...user, unread: true } : true
+            allUsers = allUsers.map((user) =>
+              user._id === existUser._id ? { ...user, unread: true } : user
             );
             setUsers(allUsers);
           }
@@ -67,6 +67,12 @@ function SupportScreen() {
           setUsers(allUsers);
         }
       });
+      
+      sk.on('listUsers', (updatedUsers) => {
+        allUsers = updatedUsers;
+        setUsers(allUsers);
+      });
+
       sk.on("selectUser", (user) => {
         allMessages = user.messages;
         setMessages(allMessages);
